@@ -1,6 +1,7 @@
 *.cmi
 *.cmo
 *.out
+.DS_Store
 parser.ml
 parser.mli
 scanner.ml

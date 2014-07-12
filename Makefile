@@ -21,7 +21,7 @@ while1
 
 TARFILES = Makefile testall.sh scanner.mll parser.mly \
 	ast.ml bytecode.ml interpret.ml compile.ml execute.ml datatypes.ml jme.ml \
-	$(TESTS:%=tests/test-%.mc) \
+	$(TESTS:%=tests/test-%.jme) \
 	$(TESTS:%=tests/test-%.out)
 
 jme : $(OBJS)
