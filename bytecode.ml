@@ -1,5 +1,7 @@
+
+
 type bstmt =
-    Lit of int    (* Push a literal *)
+    Lit of Datatypes.dtypes (* Push a literal *)
   | Drp           (* Discard a value *)
   | Bin of Ast.op (* Perform arithmetic on top of stack *)
   | Lod of int    (* Fetch global variable *)
@@ -18,9 +20,10 @@ type prog = {
     num_globals : int;   (* Number of global variables *)
     text : bstmt array; (* Code for all the functions *)
   }
+  
 
 let string_of_stmt = function
-    Lit(i) -> "Lit " ^ string_of_int i
+    Lit(i) -> "Lit " ^ Datatypes.string_of_expr i
   | Drp -> "Drp"
   | Bin(Ast.Add) -> "Add"
   | Bin(Ast.Sub) -> "Sub"

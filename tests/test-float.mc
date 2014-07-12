@@ -1,4 +1,9 @@
+addone(x) {
+ var result;
+ result = x + 1.0;
+ return result;
+}
 main()
 {
-  print(39.0);
+  print(addone(2.1));
 }

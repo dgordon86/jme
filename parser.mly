@@ -3,8 +3,9 @@
 %token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
 %token PLUS MINUS TIMES DIVIDE ASSIGN
 %token EQ NEQ LT LEQ GT GEQ
-%token RETURN IF ELSE FOR WHILE INT
+%token RETURN IF ELSE FOR WHILE VAR
 %token <int> LITERAL
+%token <float> FLOAT
 %token <string> ID
 %token EOF
 
@@ -46,7 +47,7 @@ vdecl_list:
   | vdecl_list vdecl { $2 :: $1 }
 
 vdecl:
-   INT ID SEMI { $2 }
+   VAR ID SEMI { $2 }
 
 stmt_list:
     /* nothing */  { [] }
@@ -68,6 +69,7 @@ expr_opt:
 
 expr:
     LITERAL          { Literal($1) }
+  | FLOAT            { Float($1) }
   | ID               { Id($1) }
   | expr PLUS   expr { Binop($1, Add,   $3) }
   | expr MINUS  expr { Binop($1, Sub,   $3) }

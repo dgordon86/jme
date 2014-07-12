@@ -25,7 +25,8 @@ rule token = parse
 | "for"    { FOR }
 | "while"  { WHILE }
 | "return" { RETURN }
-| "int"    { INT }
+| "var"    { VAR }
+| ['0'-'9']+['.']['0'-'9']+ as lxm { FLOAT(float_of_string lxm) }
 | ['0'-'9']+ as lxm { LITERAL(int_of_string lxm) }
 | ['a'-'z' 'A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { ID(lxm) }
 | eof { EOF }

@@ -43,7 +43,8 @@ let translate (globals, functions) =
 		  StringMap.empty (local_offsets @ formal_offsets) } in
 
     let rec expr = function
-	Literal i -> [Lit i]
+	Literal i -> [Lit (Datatypes.Int i)]
+      | Float f -> [Lit (Datatypes.Float f)]
       | Id s ->
 	  (try [Lfp (StringMap.find s env.local_index)]
           with Not_found -> try [Lod (StringMap.find s env.global_index)]
@@ -75,7 +76,7 @@ let translate (globals, functions) =
 
     in [Ent num_locals] @      (* Entry: allocate space for locals *)
     stmt (Block fdecl.body) @  (* Body *)
-    [Lit 0; Rts num_formals]   (* Default = return 0 *)
+    [Lit (Datatypes.Int 0); Rts num_formals]   (* Default = return 0 *)
 
   in let env = { function_index = function_indexes;
 		 global_index = global_indexes;
