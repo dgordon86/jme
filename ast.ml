@@ -3,6 +3,7 @@ type op = Add | Sub | Mult | Div | Equal | Neq | Less | Leq | Greater | Geq
 type expr =
     Literal of int
   | Float of float
+  | Boolean of bool
   | Id of string
   | Binop of expr * op * expr
   | Assign of string * expr
@@ -29,6 +30,7 @@ type program = string list * func_decl list
 let rec string_of_expr = function
     Literal(l) -> string_of_int l
   | Float(f) -> string_of_float f
+  | Boolean(b) -> string_of_bool b
   | Id(s) -> s
   | Binop(e1, o, e2) ->
       string_of_expr e1 ^ " " ^

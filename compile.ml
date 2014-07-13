@@ -45,6 +45,7 @@ let translate (globals, functions) =
     let rec expr = function
 	Literal i -> [Lit (Datatypes.Int i)]
       | Float f -> [Lit (Datatypes.Float f)]
+      | Boolean b -> [Lit (Datatypes.Boolean b)]
       | Id s ->
 	  (try [Lfp (StringMap.find s env.local_index)]
           with Not_found -> try [Lod (StringMap.find s env.global_index)]

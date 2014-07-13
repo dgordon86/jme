@@ -30,7 +30,7 @@ let execute_prog prog =
       | Sub     -> subtract op1 op2
       | Mult    -> multiply op1 op2
       | Div     -> divide op1 op2
-      | Equal   -> boolean (op1 =  op2)
+      | Equal   -> equal op1 op2
       | Neq     -> boolean (op1 != op2)
       | Less    -> boolean (op1 <  op2)
       | Leq     -> boolean (op1 <= op2)

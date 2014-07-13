@@ -6,6 +6,7 @@
 %token RETURN IF ELSE FOR WHILE VAR
 %token <int> LITERAL
 %token <float> FLOAT
+%token <bool> BOOLEAN
 %token <string> ID
 %token EOF
 
@@ -70,6 +71,7 @@ expr_opt:
 expr:
     LITERAL          { Literal($1) }
   | FLOAT            { Float($1) }
+  | BOOLEAN          { Boolean($1) }
   | ID               { Id($1) }
   | expr PLUS   expr { Binop($1, Add,   $3) }
   | expr MINUS  expr { Binop($1, Sub,   $3) }
