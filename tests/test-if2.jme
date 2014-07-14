@@ -1,8 +1,6 @@
 main()
 {
   var a;
-  a = 2;
-  print(a);
-  if (a == 0) print(42); else print(8);
-  print(17);
+  a = 4;
+  if (a == 4) print(true); else print(false);
 }

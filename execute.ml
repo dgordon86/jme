@@ -46,7 +46,7 @@ let execute_prog prog =
   | Ent i   -> stack.(sp)   <- Int fp           ; exec sp (sp+i+1) (pc+1)
   | Rts i   -> let new_fp = cast_int stack.(fp) and new_pc = cast_int stack.(fp-1) in
                stack.(fp-i-1) <- stack.(sp-1) ; exec new_fp (fp-i) new_pc
-  | Beq i   -> exec fp (sp-1) (pc + if stack.(sp-1) = (Int 0) then i else 1)
+  | Beq i   -> exec fp (sp-1) (pc + if stack.(sp-1) = (Boolean false) then i else 1)
   | Bne i   -> exec fp (sp-1) (pc + if stack.(sp-1) != (Int 0) then i else 1)
   | Bra i   -> exec fp sp (pc+i)
   | Hlt     -> ()
