@@ -1,6 +1,7 @@
 *.cmi
 *.cmo
 *.c.out
+*.diff
 .DS_Store
 parser.ml
 parser.mli

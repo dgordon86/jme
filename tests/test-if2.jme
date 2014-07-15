@@ -1,6 +1,6 @@
 main()
 {
   var a;
-  a = 4;
-  if (a == 4) print(true); else print(false);
+  a = 6;
+  if (a != 7) print(true); else print(false);
 }
