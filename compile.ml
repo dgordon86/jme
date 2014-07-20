@@ -46,6 +46,7 @@ let translate (globals, functions) =
 	Literal i -> [Lit (Datatypes.Int i)]
       | Float f -> [Lit (Datatypes.Float f)]
       | Boolean b -> [Lit (Datatypes.Boolean b)]
+      | String s -> [Lit (Datatypes.String (Datatypes.stripQuotes s))]
       | Id s ->
 	  (try [Lfp (StringMap.find s env.local_index)]
           with Not_found -> try [Lod (StringMap.find s env.global_index)]

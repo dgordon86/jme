@@ -4,18 +4,21 @@ type dtypes =
     |Int of int
     |Float of float
     |Boolean of bool
+    |String of string
     
     
 let string_of_dtype = function
     Int(s) -> "Int " 
     | Float(s) -> "Float"
     | Boolean(s) -> "Boolean"
+    | String(s) -> "String"
     | Null -> "Null"
 
 let string_of_expr = function
     Int(s) -> string_of_int s
     | Float(s) -> string_of_float s
     | Boolean(s) -> string_of_bool s
+    | String(s) -> s
     | Null -> "null"
     
 let add a b = 
@@ -24,6 +27,7 @@ let add a b =
     | Float(a), Float(b) -> Float (a +. b)
     | Int(a), Float(b) -> Float ((float_of_int a) +. b)
     | Float(a), Int(b) -> Float (a +. (float_of_int b))
+    | String(a), String(b) -> String (a ^ b)
     |_ -> raise(Failure("invalid addition"))
 
 let subtract a b = 
@@ -87,6 +91,9 @@ let greatthneq a b =
     Int(a), Int(b) -> Boolean(a >= b)
     | Float(a), Float(b) -> Boolean (a >= b)
     |_ -> Boolean(false)
+    
+let stripQuotes str =
+    String.sub str 1 ((String.length str) -2)
 
 let to_Bool = function
     Boolean i -> i

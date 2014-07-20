@@ -7,6 +7,7 @@
 %token <int> LITERAL
 %token <float> FLOAT
 %token <bool> BOOLEAN
+%token <string> STRING
 %token <string> ID
 %token EOF
 
@@ -46,6 +47,7 @@ formal_list:
 vdecl_list:
     /* nothing */    { [] }
   | vdecl_list vdecl { $2 :: $1 }
+  /*| VAR ID ASSIGN expr SEMI {InlineVar($2, $4) } */
 
 vdecl:
    VAR ID SEMI { $2 }
@@ -72,6 +74,7 @@ expr:
     LITERAL          { Literal($1) }
   | FLOAT            { Float($1) }
   | BOOLEAN          { Boolean($1) }
+  | STRING           { String($1) }
   | ID               { Id($1) }
   | expr PLUS   expr { Binop($1, Add,   $3) }
   | expr MINUS  expr { Binop($1, Sub,   $3) }

@@ -27,6 +27,7 @@ rule token = parse
 | "return" { RETURN }
 | "var"    { VAR }
 | "true" | "false" as boolean { BOOLEAN(bool_of_string boolean)}
+| '"'[^ '\r' '\n' '\"']*'"' as str {STRING (str)}
 | ['0'-'9']+['.']['0'-'9']+ as lxm { FLOAT(float_of_string lxm) }
 | ['0'-'9']+ as lxm { LITERAL(int_of_string lxm) }
 | ['a'-'z' 'A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { ID(lxm) }

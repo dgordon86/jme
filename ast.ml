@@ -4,6 +4,7 @@ type expr =
     Literal of int
   | Float of float
   | Boolean of bool
+  | String of string
   | Id of string
   | Binop of expr * op * expr
   | Assign of string * expr
@@ -13,6 +14,7 @@ type expr =
 type stmt =
     Block of stmt list
   | Expr of expr
+  | InlineVar of string * expr
   | Return of expr
   | If of expr * stmt * stmt
   | For of expr * expr * expr * stmt
@@ -31,6 +33,7 @@ let rec string_of_expr = function
     Literal(l) -> string_of_int l
   | Float(f) -> string_of_float f
   | Boolean(b) -> string_of_bool b
+  | String(s) -> s
   | Id(s) -> s
   | Binop(e1, o, e2) ->
       string_of_expr e1 ^ " " ^
@@ -49,6 +52,7 @@ let rec string_of_stmt = function
       "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
   | Expr(expr) -> string_of_expr expr ^ ";\n";
   | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n";
+  | InlineVar(id, expr) -> "var " ^ id ^ ";\n"
   | If(e, s, Block([])) -> "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s
   | If(e, s1, s2) ->  "if (" ^ string_of_expr e ^ ")\n" ^
       string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
@@ -57,7 +61,7 @@ let rec string_of_stmt = function
       string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) -> "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
 
-let string_of_vdecl id = "int " ^ id ^ ";\n"
+let string_of_vdecl id = "var " ^ id ^ ";\n"
 
 let string_of_fdecl fdecl =
   fdecl.fname ^ "(" ^ String.concat ", " fdecl.formals ^ ")\n{\n" ^
