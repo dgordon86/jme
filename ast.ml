@@ -9,6 +9,7 @@ type expr =
   | Binop of expr * op * expr
   | Assign of string * expr
   | Call of string * expr list
+  | VectRef of string * expr
   | Vector of expr list
   | Noexpr
 
@@ -46,6 +47,7 @@ let rec string_of_expr = function
   | Call(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Vector(v) -> "[" ^ String.concat "," (List.map string_of_expr v) ^ "]"
+  | VectRef(v, e) -> v ^ "@" ^ string_of_expr e
   | Noexpr -> ""
 
 let rec string_of_stmt = function

@@ -48,12 +48,14 @@ let execute_prog prog =
   | Jsr(-1) -> print_endline (string_of_expr stack.(sp-1)) ; exec fp sp (pc+1)
   | Jsr i   -> stack.(sp)   <- Int (pc + 1)       ; exec fp (sp+1) i
   | Ent i   -> stack.(sp)   <- Int fp           ; exec sp (sp+i+1) (pc+1)
-  | Rts i   -> let new_fp = cast_int stack.(fp) and new_pc = cast_int stack.(fp-1) in
+  | Rts i   -> let new_fp = to_Int stack.(fp) and new_pc = to_Int stack.(fp-1) in
                stack.(fp-i-1) <- stack.(sp-1) ; exec new_fp (fp-i) new_pc
   | Beq i   -> exec fp (sp-1) (pc + if to_Bool(equal stack.(sp-1) (Boolean false)) then i else 1)
   | Bne i   -> exec fp (sp-1) (pc + if to_Bool(nequal stack.(sp-1) (Boolean false)) then i else 1)
   | Bra i   -> exec fp sp (pc+i)
-  | Vect i -> stack.(sp-i) <- Vector(listcons i (sp -1) []); exec fp (sp-i +1) (pc+1)
+  | Vec i -> stack.(sp-i) <- Vector(listcons i (sp -1) []); exec fp (sp-i +1) (pc+1)
+  | Lodv i -> let nth = stack.(sp-1) in
+                stack.(sp) <- getVectElement nth stack.(fp+i); exec fp (sp+1) (pc+1)
   | Hlt     -> ()
 
   in exec 0 0 0

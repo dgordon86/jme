@@ -88,6 +88,7 @@ expr:
   | expr GEQ    expr { Binop($1, Geq,   $3) }
   | ID ASSIGN expr   { Assign($1, $3) }
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
+  | ID LBRACKET expr RBRACKET { VectRef($1,$3) }
   | LBRACKET  vector_opt RBRACKET { Vector($2) }
   | LPAREN expr RPAREN { $2 }
 

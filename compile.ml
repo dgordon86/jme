@@ -56,11 +56,15 @@ let translate (globals, functions) =
 	  (try [Sfp (StringMap.find s env.local_index)]
   	  with Not_found -> try [Str (StringMap.find s env.global_index)]
 	  with Not_found -> raise (Failure ("undeclared variable " ^ s)))
+      | VectRef (s, e) -> expr e @
+	       (try [Lodv (StringMap.find s env.local_index)]
+  	         with Not_found -> try [Lodv (StringMap.find s env.global_index)]
+	         with Not_found -> raise (Failure ("undeclared variable " ^ s)))
       | Call (fname, actuals) -> (try
 	  (List.concat (List.map expr (List.rev actuals))) @
 	  [Jsr (StringMap.find fname env.function_index) ]   
         with Not_found -> raise (Failure ("undefined function " ^ fname)))
-      | Vector v -> (List.concat (List.map expr v)) @ [Vect (List.length v) ]
+      | Vector v -> (List.concat (List.map expr v)) @ [Vec (List.length v) ]
       | Noexpr -> []
 
     in let rec stmt = function

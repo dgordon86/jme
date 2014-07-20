@@ -23,6 +23,11 @@ let rec string_of_expr = function
     | String(s) -> s
     | Vector(s) -> "[" ^ String.concat "," (List.map string_of_expr s) ^ "]"
     | Null -> "null"
+
+let getVectElement i v =
+    match i, v with
+    Int(i), Vector(v) -> List.nth v i
+    |_ -> raise(Failure("invalid vector access"))
     
 let add a b = 
     match a, b with
@@ -101,7 +106,11 @@ let stripQuotes str =
 let to_Bool = function
     Boolean i -> i
     |_ -> raise(Failure "invalid boolean")
+
+let to_List = function
+    Vector i -> i
+    |_ -> raise(Failure "invalid vector")
     
-let cast_int = function
+let to_Int = function
     Int i  -> i
     | _     -> raise(Failure "invalid integer")

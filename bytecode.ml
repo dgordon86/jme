@@ -14,7 +14,8 @@ type bstmt =
   | Beq of int    (* Branch relative if top-of-stack is zero *)
   | Bne of int    (* Branch relative if top-of-stack is non-zero *)
   | Bra of int    (* Branch relative *)
-  | Vect of int   (* vector init *)
+  | Vec of int    (* vector init *)
+  | Lodv of int   (* Load element of vector *)
   | Hlt           (* Terminate *)
 
 type prog = {
@@ -46,7 +47,8 @@ let string_of_stmt = function
   | Bne(i) -> "Bne " ^ string_of_int i
   | Beq(i) -> "Beq " ^ string_of_int i
   | Bra(i) -> "Bra " ^ string_of_int i
-  | Vect(i) -> "Vect " ^ string_of_int i
+  | Vec(i) -> "Vect " ^ string_of_int i
+  | Lodv(i) -> "Lodv " ^ string_of_int i
   | Hlt    -> "Hlt"
 
 let string_of_prog p =
