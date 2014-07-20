@@ -1,6 +1,6 @@
 %{ open Ast %}
 
-%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
+%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LBRACKET RBRACKET
 %token PLUS MINUS TIMES DIVIDE ASSIGN
 %token EQ NEQ LT LEQ GT GEQ
 %token RETURN IF ELSE FOR WHILE VAR
@@ -88,6 +88,7 @@ expr:
   | expr GEQ    expr { Binop($1, Geq,   $3) }
   | ID ASSIGN expr   { Assign($1, $3) }
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
+  | LBRACKET  vector_opt RBRACKET { Vector($2) }
   | LPAREN expr RPAREN { $2 }
 
 actuals_opt:
@@ -97,3 +98,11 @@ actuals_opt:
 actuals_list:
     expr                    { [$1] }
   | actuals_list COMMA expr { $3 :: $1 }
+  
+  vector_opt:
+    /* nothing */ {[]}
+   | vector_list    {List.rev $1}
+   
+   vector_list:
+    expr    {[$1]}
+   | vector_list COMMA expr {$3 :: $1}

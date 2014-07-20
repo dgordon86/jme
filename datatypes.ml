@@ -5,6 +5,7 @@ type dtypes =
     |Float of float
     |Boolean of bool
     |String of string
+    | Vector of dtypes list
     
     
 let string_of_dtype = function
@@ -12,13 +13,15 @@ let string_of_dtype = function
     | Float(s) -> "Float"
     | Boolean(s) -> "Boolean"
     | String(s) -> "String"
+    | Vector(s) -> "Vector"
     | Null -> "Null"
 
-let string_of_expr = function
+let rec string_of_expr = function
     Int(s) -> string_of_int s
     | Float(s) -> string_of_float s
     | Boolean(s) -> string_of_bool s
     | String(s) -> s
+    | Vector(s) -> "[" ^ String.concat "," (List.map string_of_expr s) ^ "]"
     | Null -> "null"
     
 let add a b = 

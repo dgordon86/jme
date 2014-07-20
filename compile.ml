@@ -60,6 +60,7 @@ let translate (globals, functions) =
 	  (List.concat (List.map expr (List.rev actuals))) @
 	  [Jsr (StringMap.find fname env.function_index) ]   
         with Not_found -> raise (Failure ("undefined function " ^ fname)))
+      | Vector v -> (List.concat (List.map expr v)) @ [Vect (List.length v) ]
       | Noexpr -> []
 
     in let rec stmt = function
