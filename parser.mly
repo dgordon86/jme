@@ -89,6 +89,7 @@ expr:
   | ID ASSIGN expr   { Assign($1, $3) }
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
   | ID LBRACKET expr RBRACKET { VectRef($1,$3) }
+  | ID LBRACKET expr RBRACKET ASSIGN expr { VectAssign($1,$3, $6) }
   | LBRACKET  vector_opt RBRACKET { Vector($2) }
   | LPAREN expr RPAREN { $2 }
 

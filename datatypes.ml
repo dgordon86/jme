@@ -56,7 +56,9 @@ let multiply a b =
 
 let divide a b =
     match a, b with
-    Int(a), Int(b) -> Int (a / b)
+    Int(a), Int(b) -> (* if division by integer yields a remainder, implicitly convert to float *)
+                      if a mod b > 0 then 
+                      Float((float_of_int a) /. (float_of_int b)) else Int (a / b)
     | Float(a), Float(b) -> Float (a /. b)
     | Int(a), Float(b) -> Float ((float_of_int a) /. b)
     | Float(a), Int(b) -> Float (a /. (float_of_int b))

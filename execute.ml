@@ -46,6 +46,7 @@ let execute_prog prog =
   | Lfp i   -> stack.(sp)   <- stack.(fp+i) ; exec fp (sp+1) (pc+1)
   | Sfp i   -> stack.(fp+i) <- stack.(sp-1) ; exec fp sp     (pc+1)
   | Jsr(-1) -> print_endline (string_of_expr stack.(sp-1)) ; exec fp sp (pc+1)
+  | Jsr(-2) -> stack.(sp-1) <- Int (List.length (to_List stack.(sp-1))); exec fp sp (pc+1)
   | Jsr i   -> stack.(sp)   <- Int (pc + 1)       ; exec fp (sp+1) i
   | Ent i   -> stack.(sp)   <- Int fp           ; exec sp (sp+i+1) (pc+1)
   | Rts i   -> let new_fp = to_Int stack.(fp) and new_pc = to_Int stack.(fp-1) in

@@ -29,6 +29,7 @@ let translate (globals, functions) =
 
   (* Assign indexes to function names; built-in "print" is special *)
   let built_in_functions = StringMap.add "print" (-1) StringMap.empty in
+  let built_in_functions = StringMap.add "len" (-2) built_in_functions in
   let function_indexes = string_map_pairs built_in_functions
       (enum 1 1 (List.map (fun f -> f.fname) functions)) in
 
