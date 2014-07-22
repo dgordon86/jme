@@ -1,0 +1,6 @@
+main()
+{
+ var a;
+ a = 3;
+ print(2 ^ a);
+}

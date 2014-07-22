@@ -1,0 +1,11 @@
+
+mean(a)
+{
+  var i;
+  var total;
+  total = 0;
+  for (i = 0 ; i < len(a) ; i = i + 1) {
+    total = a[i] + total;
+  }
+  return total / len(a);
+}

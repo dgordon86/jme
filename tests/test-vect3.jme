@@ -1,17 +1,7 @@
 
-average(a)
-{
-  var i;
-  var total;
-  total = 0;
-  for (i = 0 ; i < len(a) ; i = i + 1) {
-    total = a[i] + total;
-  }
-  return total / len(a);
-}
 main()
 {
  var avg;
- avg = average([1, 2, 3, 4, 99]);
+ avg = mean([1, 2, 3, 4, 99]);
  print(avg);
 }

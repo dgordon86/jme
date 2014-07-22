@@ -34,6 +34,7 @@ let execute_prog prog =
       | Sub     -> subtract op1 op2
       | Mult    -> multiply op1 op2
       | Div     -> divide op1 op2
+      | Exponent -> power op1 op2
       | Equal   -> equal op1 op2
       | Neq     -> nequal op1 op2
       | Less    -> lessthn op1 op2

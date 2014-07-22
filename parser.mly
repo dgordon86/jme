@@ -1,7 +1,7 @@
 %{ open Ast %}
 
 %token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LBRACKET RBRACKET
-%token PLUS MINUS TIMES DIVIDE ASSIGN
+%token PLUS MINUS TIMES DIVIDE ASSIGN EXPONENT
 %token EQ NEQ LT LEQ GT GEQ
 %token RETURN IF ELSE FOR WHILE VAR
 %token <int> LITERAL
@@ -15,9 +15,10 @@
 %nonassoc ELSE
 %right ASSIGN
 %left EQ NEQ
-%left LT GT LEQ GEQ
+%left LT GT LEQ GEQ 
 %left PLUS MINUS
 %left TIMES DIVIDE
+%left EXPONENT
 
 %start program
 %type <Ast.program> program
@@ -80,6 +81,7 @@ expr:
   | expr MINUS  expr { Binop($1, Sub,   $3) }
   | expr TIMES  expr { Binop($1, Mult,  $3) }
   | expr DIVIDE expr { Binop($1, Div,   $3) }
+  | expr EXPONENT expr { Binop($1, Exponent, $3) }
   | expr EQ     expr { Binop($1, Equal, $3) }
   | expr NEQ    expr { Binop($1, Neq,   $3) }
   | expr LT     expr { Binop($1, Less,  $3) }

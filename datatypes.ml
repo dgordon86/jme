@@ -62,8 +62,17 @@ let divide a b =
     | Float(a), Float(b) -> Float (a /. b)
     | Int(a), Float(b) -> Float ((float_of_int a) /. b)
     | Float(a), Int(b) -> Float (a /. (float_of_int b))
-    |_ -> raise(Failure("invalid addition"))
+    |_ -> raise(Failure("invalid division"))
 
+let power a b =
+    match a, b with
+    Int(a), Int(b) -> (* if exponentiation by integer implicitly convert to float *)
+                      Float((float_of_int a) ** (float_of_int b))
+    | Float(a), Float(b) -> Float (a ** b)
+    | Int(a), Float(b) -> Float ((float_of_int a) ** b)
+    | Float(a), Int(b) -> Float (a ** (float_of_int b))
+    |_ -> raise(Failure("invalid arguments for exponents"))
+    
 let equal a b =
     match a, b with
     Int(a), Int(b) -> Boolean(a = b)
