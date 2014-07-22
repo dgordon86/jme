@@ -1,6 +1,10 @@
 main()
 {
  var a;
- a = 3;
- print(2 ^ a);
+ a = 4 + 2 ^ 2;
+ print(a);
+ a = (3 + 2) ^ 2;
+ print(a);
+ a = 3 * 2 ^ 2;
+ print(a);
 }
