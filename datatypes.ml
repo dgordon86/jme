@@ -114,6 +114,11 @@ let greatthneq a b =
 let stripQuotes str =
     String.sub str 1 ((String.length str) -2)
 
+let to_Float = function
+    Int i -> float_of_int i
+    | Float i -> i
+    |_ -> raise(Failure "not a float or int")
+
 let to_Bool = function
     Boolean i -> i
     |_ -> raise(Failure "invalid boolean")
