@@ -20,9 +20,13 @@ let execute_prog prog =
   let stack = Array.make 1024 Null
   and globals = Array.make prog.num_globals Null in
   
-  let rec listcons n top s =
-    if n == 0 then s
-        else listcons (n-1) (top-1) (stack.(top) :: s) in
+  let fillVector n top =
+    if n == 0 then Array.make 1 Null
+        else let v = Array.make n Null in
+            for i = 0 to n - 1 do
+                v.(i) <- stack.(top - ((n-1) - i))
+            done;
+            v in
 
   let rec exec fp sp pc = match prog.text.(pc) with
     Lit i  -> stack.(sp) <- i; exec fp (sp+1) (pc+1)
@@ -47,7 +51,7 @@ let execute_prog prog =
   | Lfp i   -> stack.(sp)   <- stack.(fp+i) ; exec fp (sp+1) (pc+1)
   | Sfp i   -> stack.(fp+i) <- stack.(sp-1) ; exec fp sp     (pc+1)
   | Jsr(-1) -> print_endline (string_of_expr stack.(sp-1)) ; exec fp sp (pc+1)
-  | Jsr(-2) -> stack.(sp-1) <- Int (List.length (to_List stack.(sp-1))); exec fp sp (pc+1)
+  | Jsr(-2) -> stack.(sp-1) <- Int (Array.length (to_Vector stack.(sp-1))); exec fp sp (pc+1)
   | Jsr(-3) -> stack.(sp-1) <- Float (sqrt (to_Float stack.(sp-1))); exec fp sp (pc+1)
   | Jsr i   -> stack.(sp)   <- Int (pc + 1)       ; exec fp (sp+1) i
   | Ent i   -> stack.(sp)   <- Int fp           ; exec sp (sp+i+1) (pc+1)
@@ -56,7 +60,7 @@ let execute_prog prog =
   | Beq i   -> exec fp (sp-1) (pc + if to_Bool(equal stack.(sp-1) (Boolean false)) then i else 1)
   | Bne i   -> exec fp (sp-1) (pc + if to_Bool(nequal stack.(sp-1) (Boolean false)) then i else 1)
   | Bra i   -> exec fp sp (pc+i)
-  | Vec i -> stack.(sp-i) <- Vector(listcons i (sp -1) []); exec fp (sp-i +1) (pc+1)
+  | Vec i -> stack.(sp-i) <- Vector(fillVector i (sp -1)); exec fp (sp-i +1) (pc+1)
   | Lodv i -> let nth = stack.(sp-1) in
                 stack.(sp) <- getVectElement nth stack.(fp+i); exec fp (sp+1) (pc+1)
   | Hlt     -> ()

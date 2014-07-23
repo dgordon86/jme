@@ -5,7 +5,7 @@ type dtypes =
     |Float of float
     |Boolean of bool
     |String of string
-    | Vector of dtypes list
+    | Vector of dtypes array
     
     
 let string_of_dtype = function
@@ -21,12 +21,12 @@ let rec string_of_expr = function
     | Float(s) -> string_of_float s
     | Boolean(s) -> string_of_bool s
     | String(s) -> s
-    | Vector(s) -> "[" ^ String.concat "," (List.map string_of_expr s) ^ "]"
+    | Vector(s) -> "[" ^ String.concat "," (List.map string_of_expr (Array.to_list s)) ^ "]"
     | Null -> "null"
 
 let getVectElement i v =
     match i, v with
-    Int(i), Vector(v) -> List.nth v i
+    Int(i), Vector(v) -> v.(i)
     |_ -> raise(Failure("invalid vector access"))
     
 let add a b = 
@@ -123,7 +123,7 @@ let to_Bool = function
     Boolean i -> i
     |_ -> raise(Failure "invalid boolean")
 
-let to_List = function
+let to_Vector = function
     Vector i -> i
     |_ -> raise(Failure "invalid vector")
     
