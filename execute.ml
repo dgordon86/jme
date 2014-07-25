@@ -62,7 +62,15 @@ let execute_prog prog =
   | Bra i   -> exec fp sp (pc+i)
   | Vec i -> stack.(sp-i) <- Vector(fillVector i (sp -1)); exec fp (sp-i +1) (pc+1)
   | Lodv i -> let nth = stack.(sp-1) in
-                stack.(sp) <- getVectElement nth stack.(fp+i); exec fp (sp+1) (pc+1)
+                stack.(sp-1) <- getVectElement nth globals.(i); exec fp (sp) (pc+1)
+  | Lfpv i -> let nth = stack.(sp-1) in
+                stack.(sp-1) <- getVectElement nth stack.(fp+i); exec fp (sp) (pc+1)
+  | Ulvec i -> let indx = stack.(sp-1) and nval = stack.(sp-2) and svec = (to_Vector stack.(fp+i)) in 
+                svec.(to_Int indx) <- nval;
+                 exec fp sp (pc+1)
+  | Ugvec i -> let indx = stack.(sp-1) and nval = stack.(sp-2) and svec = (to_Vector globals.(i)) in 
+                svec.(to_Int indx) <- nval;
+                 exec fp sp (pc+1)
   | Hlt     -> ()
 
   in exec 0 0 0

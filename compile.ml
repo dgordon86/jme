@@ -15,7 +15,7 @@ let rec enum stride n = function
     [] -> []
   | hd::tl -> (n, hd) :: enum stride (n+stride) tl
 
-(* val string_map_pairs StringMap 'a -> (int * 'a) list -> StringMap 'a *)
+(* val string_map_pairs StringMap 'a -> (int * 'a) list -> StringMap 'a  *)
 let string_map_pairs map pairs =
   List.fold_left (fun m (i, n) -> StringMap.add n i m) map pairs
 
@@ -59,8 +59,12 @@ let translate (globals, functions) =
   	  with Not_found -> try [Str (StringMap.find s env.global_index)]
 	  with Not_found -> raise (Failure ("undeclared variable " ^ s)))
       | VectRef (s, e) -> expr e @
-	       (try [Lodv (StringMap.find s env.local_index)]
+	       (try [Lfpv (StringMap.find s env.local_index)]
   	         with Not_found -> try [Lodv (StringMap.find s env.global_index)]
+	         with Not_found -> raise (Failure ("undeclared variable " ^ s)))
+      | VectAssign (s, e1, e2) -> expr e2 @ expr e1 @
+	       (try [Ulvec (StringMap.find s env.local_index)]
+  	         with Not_found -> try [Ugvec (StringMap.find s env.global_index)]
 	         with Not_found -> raise (Failure ("undeclared variable " ^ s)))
       | Call (fname, actuals) -> (try
 	  (List.concat (List.map expr (List.rev actuals))) @

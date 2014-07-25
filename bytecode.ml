@@ -15,7 +15,10 @@ type bstmt =
   | Bne of int    (* Branch relative if top-of-stack is non-zero *)
   | Bra of int    (* Branch relative *)
   | Vec of int    (* vector init *)
-  | Lodv of int   (* Load element of vector *)
+  | Lodv of int   (* Load element of vector global *)
+  | Lfpv of int   (* Load element of vector local *)
+  | Ulvec of int  (* Update element of vector local *)
+  | Ugvec of int  (* Update element of vector global *)
   | Hlt           (* Terminate *)
 
 type prog = {
@@ -50,6 +53,9 @@ let string_of_stmt = function
   | Bra(i) -> "Bra " ^ string_of_int i
   | Vec(i) -> "Vect " ^ string_of_int i
   | Lodv(i) -> "Lodv " ^ string_of_int i
+  | Lfpv(i) -> "Lfpv " ^ string_of_int i
+  | Ulvec(i) -> "Ulvec " ^ string_of_int i
+  | Ugvec(i) -> "Ugvec " ^ string_of_int i
   | Hlt    -> "Hlt"
 
 let string_of_prog p =

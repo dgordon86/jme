@@ -29,6 +29,11 @@ let getVectElement i v =
     Int(i), Vector(v) -> v.(i)
     |_ -> raise(Failure("invalid vector access"))
     
+let printstack stack =
+    for i = 0 to (Array.length stack -1) do
+        print_endline ((string_of_dtype stack.(i)) ^ " " ^ (string_of_expr stack.(i)))
+    done
+    
 let add a b = 
     match a, b with
     Int(a), Int(b) -> Int (a + b)
