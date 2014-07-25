@@ -1,0 +1,37 @@
+average(a) {
+ var total;
+ var i;
+ total = 0;
+ for (i = 0 ; i < len(a) ; i = i + 1) {
+    total = total + a[i];
+  }
+  return total / len(a);
+}
+
+stddeviation(a) {
+    var mean;
+    var newarr;
+    var i;
+    newarr = [0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; 
+    
+    mean = average(a);
+    for(i = 0; i < len(a); i = i+1) {
+        newarr[i] = (a[i] - mean) ^ 2;
+    }
+    
+    mean = average(newarr);
+    
+    return sqrt(mean);
+   
+}
+
+main()
+{
+var a;
+
+a = [9, 2, 5, 4, 12, 7, 8, 11, 9, 3, 7, 4, 12, 5, 4, 10, 9, 6, 9, 4];
+
+  
+print(stddeviation(a));
+
+}
