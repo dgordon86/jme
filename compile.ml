@@ -7,7 +7,7 @@ module StringMap = Map.Make(String)
 type env = {
     function_index : int StringMap.t; (* Index for each function *)
     global_index   : int StringMap.t; (* "Address" for global variables *)
-    local_index    : int StringMap.t; (* FP offset for args, locals *)
+    mutable local_index    : int StringMap.t; (* FP offset for args, locals *)
   }
 
 (* val enum : int -> 'a list -> (int * 'a) list *)
@@ -18,6 +18,10 @@ let rec enum stride n = function
 (* val string_map_pairs StringMap 'a -> (int * 'a) list -> StringMap 'a  *)
 let string_map_pairs map pairs =
   List.fold_left (fun m (i, n) -> StringMap.add n i m) map pairs
+  
+(*debug to view local variables *)
+let print_locals s i =
+    print_string (s ^ "->"); print_int i; print_endline "";;
 
 (** Translate a program in AST form into a bytecode program.  Throw an
     exception if something is wrong, e.g., a reference to an unknown
@@ -49,7 +53,8 @@ let translate (globals, functions) =
       | Float f -> [Lit (Datatypes.Float f)]
       | Boolean b -> [Lit (Datatypes.Boolean b)]
       | String s -> [Lit (Datatypes.String (Datatypes.stripQuotes s))]
-      | Id s ->
+      | Id s -> (*print_string "numformals: "; print_int num_formals; print_endline "";
+                print_int (StringMap.cardinal env.local_index); print_endline ""; StringMap.iter print_locals env.local_index; *)
 	  (try [Lfp (StringMap.find s env.local_index)]
           with Not_found -> try [Lod (StringMap.find s env.global_index)]
           with Not_found -> raise (Failure ("undeclared variable " ^ s)))
@@ -57,7 +62,10 @@ let translate (globals, functions) =
       | Assign (s, e) -> expr e @
 	  (try [Sfp (StringMap.find s env.local_index)]
   	  with Not_found -> try [Str (StringMap.find s env.global_index)]
-	  with Not_found -> raise (Failure ("undeclared variable " ^ s)))
+	  with Not_found -> let lclindex = StringMap.cardinal env.local_index - num_formals + 1 in 
+                        ignore(env.local_index <- StringMap.add s lclindex env.local_index); 
+                        [Sfp lclindex]
+            (*raise (Failure ("undeclared variable " ^ s))*))
       | VectRef (s, e) -> expr e @
 	       (try [Lfpv (StringMap.find s env.local_index)]
   	         with Not_found -> try [Lodv (StringMap.find s env.global_index)]
@@ -87,7 +95,7 @@ let translate (globals, functions) =
 	  [Bra (1+ List.length b')] @ b' @ e' @
 	  [Bne (-(List.length b' + List.length e'))]
 
-    in [Ent num_locals] @      (* Entry: allocate space for locals *)
+    in [Ent (StringMap.cardinal env.local_index - num_formals)] @      (* Entry: allocate space for locals *)
     stmt (Block fdecl.body) @  (* Body *)
     [Lit (Datatypes.Int 0); Rts num_formals]   (* Default = return 0 *)
 

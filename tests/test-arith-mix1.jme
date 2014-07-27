@@ -1,7 +1,4 @@
 main() {
-
-var a;
-var b;
 a = 2;
 b = 17.6;
 print(a + b);

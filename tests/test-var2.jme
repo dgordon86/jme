@@ -1,7 +1,6 @@
 var b;
 main()
 {
-  var a;
   a = "Hello ";
   b = "World";
   print(a+b);

@@ -7,7 +7,7 @@ fun(x, y)
 
 main()
 {
-  var i;
+ 
   i = 1;
 
   fun(i = 2, i = i+1);

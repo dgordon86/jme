@@ -1,0 +1,17 @@
+addthem(a) {
+
+b = 3;
+c = 4;
+
+return a + b +c;
+}
+
+
+
+main()
+{
+ answer = addthem(1);
+ 
+ print(answer);
+ 
+}

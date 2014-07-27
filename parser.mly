@@ -27,15 +27,15 @@
 
 program:
    /* nothing */ { [], [] }
- | program vdecl { ($2 :: fst $1), snd $1 }
+ | program vdecl { ($2 :: fst $1), snd $1 } 
  | program fdecl { fst $1, ($2 :: snd $1) }
 
 fdecl:
-   ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
+   ID LPAREN formals_opt RPAREN LBRACE stmt_list RBRACE
      { { fname = $1;
 	 formals = $3;
-	 locals = List.rev $6;
-	 body = List.rev $7 } }
+	 locals = [];
+	 body = List.rev $6 } }
 
 formals_opt:
     /* nothing */ { [] }
@@ -45,10 +45,11 @@ formal_list:
     ID                   { [$1] }
   | formal_list COMMA ID { $3 :: $1 }
 
+
 vdecl_list:
-    /* nothing */    { [] }
+       { [] }
   | vdecl_list vdecl { $2 :: $1 }
-  /*| VAR ID ASSIGN expr SEMI {InlineVar($2, $4) } */
+ 
 
 vdecl:
    VAR ID SEMI { $2 }

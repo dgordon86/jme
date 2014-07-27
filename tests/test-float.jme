@@ -1,5 +1,4 @@
 addone(x) {
- var result;
  result = x + 1;
  return result;
 }
