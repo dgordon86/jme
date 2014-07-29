@@ -12,6 +12,7 @@ type expr =
   | VectAssign of string * expr * expr
   | VectRef of string * expr
   | Vector of expr list
+  | VectorInit of expr
   | Noexpr
 
 type stmt =
@@ -21,6 +22,7 @@ type stmt =
   | If of expr * stmt * stmt
   | For of expr * expr * expr * stmt
   | While of expr * stmt
+  
 
 type func_decl = {
     fname : string;
@@ -49,6 +51,7 @@ let rec string_of_expr = function
   | Call(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Vector(v) -> "[" ^ String.concat "," (List.map string_of_expr v) ^ "]"
+  | VectorInit(e) -> "new " ^ "[" ^ (string_of_expr e) ^ "]"
   | VectRef(v, e) -> v ^ "[" ^ string_of_expr e ^ "]"
   | VectAssign(v, e1, e2) -> v ^ "[" ^ string_of_expr e1 ^ "] = " ^ string_of_expr e2
   | Noexpr -> ""

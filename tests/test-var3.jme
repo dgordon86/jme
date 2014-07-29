@@ -1,17 +1,21 @@
-addthem(a) {
+var a;
+
+addthem() {
 
 b = 3;
 c = 4;
-
-return a + b +c;
+a = b + c + a;
+return subtracttwo();
 }
 
-
+subtracttwo() {
+    return a -2;
+}
 
 main()
 {
- answer = addthem(1);
+ a = 3;
+ answer = addthem();
  
  print(answer);
- 
 }

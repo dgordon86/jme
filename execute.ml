@@ -12,6 +12,7 @@ open Datatypes
    Saved PC
    Arg 0
    ...
+   
    Arg n *)
    
 
@@ -61,6 +62,7 @@ let execute_prog prog =
   | Bne i   -> exec fp (sp-1) (pc + if to_Bool(nequal stack.(sp-1) (Boolean false)) then i else 1)
   | Bra i   -> exec fp sp (pc+i)
   | Vec i -> stack.(sp-i) <- Vector(fillVector i (sp -1)); exec fp (sp-i +1) (pc+1)
+  | Veci -> stack.(sp-1) <- Vector(Array.make (to_Int(stack.(sp-1))) Null); exec fp sp (pc+1)
   | Lodv i -> let nth = stack.(sp-1) in
                 stack.(sp-1) <- getVectElement nth globals.(i); exec fp (sp) (pc+1)
   | Lfpv i -> let nth = stack.(sp-1) in

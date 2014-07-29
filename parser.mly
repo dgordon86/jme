@@ -1,6 +1,7 @@
 %{ open Ast %}
 
 %token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LBRACKET RBRACKET
+%token NEW
 %token PLUS MINUS TIMES DIVIDE ASSIGN EXPONENT
 %token EQ NEQ LT LEQ GT GEQ
 %token RETURN IF ELSE FOR WHILE VAR
@@ -45,10 +46,10 @@ formal_list:
     ID                   { [$1] }
   | formal_list COMMA ID { $3 :: $1 }
 
-
+/*
 vdecl_list:
        { [] }
-  | vdecl_list vdecl { $2 :: $1 }
+  | vdecl_list vdecl { $2 :: $1 }*/
  
 
 vdecl:
@@ -67,6 +68,7 @@ stmt:
   | FOR LPAREN expr_opt SEMI expr_opt SEMI expr_opt RPAREN stmt
      { For($3, $5, $7, $9) }
   | WHILE LPAREN expr RPAREN stmt { While($3, $5) }
+
 
 expr_opt:
     /* nothing */ { Noexpr }
@@ -90,6 +92,7 @@ expr:
   | expr GT     expr { Binop($1, Greater,  $3) }
   | expr GEQ    expr { Binop($1, Geq,   $3) }
   | ID ASSIGN expr   { Assign($1, $3) }
+  | NEW LBRACKET expr RBRACKET {VectorInit($3) }
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
   | ID LBRACKET expr RBRACKET { VectRef($1,$3) }
   | ID LBRACKET expr RBRACKET ASSIGN expr { VectAssign($1,$3, $6) }

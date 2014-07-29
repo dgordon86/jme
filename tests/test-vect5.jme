@@ -1,0 +1,6 @@
+
+main()
+{
+a = new [5];
+print(a);
+}

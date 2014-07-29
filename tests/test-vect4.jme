@@ -8,7 +8,7 @@ average(a) {
 
 stddeviation(a) {
    
-    newarr = [0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; 
+    newarr = new [len(a)];
     
     mean = average(a);
     for(i = 0; i < len(a); i = i+1) {

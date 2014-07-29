@@ -19,6 +19,7 @@ type bstmt =
   | Lfpv of int   (* Load element of vector local *)
   | Ulvec of int  (* Update element of vector local *)
   | Ugvec of int  (* Update element of vector global *)
+  | Veci          (* create an empty vector and push on to stack *)
   | Hlt           (* Terminate *)
 
 type prog = {
@@ -56,6 +57,7 @@ let string_of_stmt = function
   | Lfpv(i) -> "Lfpv " ^ string_of_int i
   | Ulvec(i) -> "Ulvec " ^ string_of_int i
   | Ugvec(i) -> "Ugvec " ^ string_of_int i
+  | Veci -> "Veci"
   | Hlt    -> "Hlt"
 
 let string_of_prog p =
