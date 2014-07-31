@@ -33,8 +33,9 @@ let translate (globals, functions) =
 
   (* Assign indexes to function names; built-in "print" is special *)
   let built_in_functions = StringMap.add "print" (-1) StringMap.empty in
-  let built_in_functions = StringMap.add "len" (-2) built_in_functions in
-  let built_in_functions = StringMap.add "sqrt" (-3) built_in_functions in
+  let built_in_functions = StringMap.add "width" (-2) built_in_functions in
+  let built_in_functions = StringMap.add "height" (-3) built_in_functions in
+  let built_in_functions = StringMap.add "sqrt" (-4) built_in_functions in
   let function_indexes = string_map_pairs built_in_functions
       (enum 1 1 (List.map (fun f -> f.fname) functions)) in
 
@@ -42,7 +43,6 @@ let translate (globals, functions) =
   let translate env fdecl =
     (* Bookkeeping: FP offsets for locals and arguments *)
     let num_formals = List.length fdecl.formals
-    and num_locals = List.length fdecl.locals
     and local_offsets = enum 1 1 fdecl.locals
     and formal_offsets = enum (-1) (-2) fdecl.formals in
     let env = { env with local_index = string_map_pairs
@@ -84,10 +84,17 @@ let translate (globals, functions) =
                       let dimx = List.length m in
                       let dimy = List.length (List.hd m) in
                       ignore(Util.checkmatrix m); (List.concat (List.map expr (List.concat m))) @ [Mat (dimx,dimy) ] 
-                     
-                        
-      | Vector v -> (List.concat (List.map expr v)) @ [Vec (List.length v) ]
+  
       | VectorInit e -> expr e @ [Veci]
+      | MatrixInit (x,y) -> expr x @ expr y @ [Mati]
+      | MatxRef (s, x, y) -> expr x @ expr y @
+            (try [Lfpm (StringMap.find s env.local_index)]
+  	         with Not_found -> try [Lodm (StringMap.find s env.global_index)]
+	         with Not_found -> raise (Failure ("undeclared variable " ^ s)))
+      | MatxAssign (s, e1, e2, e3) -> expr e3 @ expr e1 @ expr e2 @
+	       (try [Ulmat (StringMap.find s env.local_index)]
+  	         with Not_found -> try [Ugmat (StringMap.find s env.global_index)]
+	         with Not_found -> raise (Failure ("undeclared variable " ^ s)))
       | Noexpr -> []
 
     in let rec stmt = function

@@ -93,11 +93,13 @@ expr:
   | expr GEQ    expr { Binop($1, Geq,   $3) }
   | ID ASSIGN expr   { Assign($1, $3) }
   | NEW LBRACKET expr RBRACKET {VectorInit($3) }
+  | NEW LBRACKET expr RBRACKET LBRACKET expr RBRACKET {MatrixInit($3,$6) }
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
   | ID LBRACKET expr RBRACKET { VectRef($1,$3) }
+  | ID LBRACKET expr RBRACKET LBRACKET expr RBRACKET { MatxRef($1, $3, $6) }
   | ID LBRACKET expr RBRACKET ASSIGN expr { VectAssign($1,$3, $6) }
+  | ID LBRACKET expr RBRACKET LBRACKET expr RBRACKET ASSIGN expr { MatxAssign($1,$3, $6, $9) }
   | LBRACKET mat_opt RBRACKET {Matrix($2) } 
- /* | LBRACKET  vector_opt RBRACKET { Vector($2) }*/
   | LPAREN expr RPAREN { $2 }
 
 actuals_opt:

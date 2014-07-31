@@ -1,5 +1,5 @@
 type op = Add | Sub | Mult | Div | Exponent | Equal | Neq | Less | Leq | Greater | Geq
-
+ 
 type expr =
     Literal of int
   | Float of float
@@ -11,9 +11,11 @@ type expr =
   | Call of string * expr list
   | VectAssign of string * expr * expr
   | VectRef of string * expr
-  | Vector of expr list
   | VectorInit of expr
   | Matrix of expr list list
+  | MatrixInit of expr * expr
+  | MatxRef of string * expr * expr
+  | MatxAssign of string * expr * expr * expr
   | Noexpr
 
 type stmt =
@@ -53,10 +55,12 @@ let rec string_of_expr = function
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Matrix (m) -> "\n[" ^ (String.concat ";\n " (List.map (fun lexpr -> "" ^ (String.concat "," (List.map (fun e -> string_of_expr e) lexpr ))  ^ "" ) m))
                 ^ "]"
-  | Vector(v) -> "[" ^ String.concat "," (List.map string_of_expr v) ^ "]"
   | VectorInit(e) -> "new " ^ "[" ^ (string_of_expr e) ^ "]"
+  | MatrixInit(x,y) -> "new " ^ "[" ^ (string_of_expr x) ^ "] [" ^ (string_of_expr y) ^ "]"
+  | MatxRef(v, x, y) -> v ^ "[" ^ string_of_expr x ^ "][" ^ string_of_expr y ^ "]"
   | VectRef(v, e) -> v ^ "[" ^ string_of_expr e ^ "]"
   | VectAssign(v, e1, e2) -> v ^ "[" ^ string_of_expr e1 ^ "] = " ^ string_of_expr e2
+  | MatxAssign(m, e1, e2, e3) -> m ^ "[" ^ string_of_expr e1 ^ "][" ^ string_of_expr e2 ^ "] = " ^ string_of_expr e3
   | Noexpr -> ""
 
 let rec string_of_stmt = function

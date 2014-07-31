@@ -1,0 +1,25 @@
+addone(mat) {
+
+
+for (i = 0 ; i < height(mat) ; i = i + 1) {
+    for(j=0; j < width(mat); j = j + 1) {
+        mat[i][j] = mat[i][j] + 1;
+    }
+   
+  }
+  
+  return mat;
+
+}
+
+
+main()
+{
+
+ a = [1,2,3; 4,5,6];
+ b = addone(a);
+ 
+ print(b);
+
+}
+

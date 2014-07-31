@@ -1,17 +1,17 @@
 average(a) {
  total = 0;
- for (i = 0 ; i < len(a) ; i = i + 1) {
+ for (i = 0 ; i < width(a) ; i = i + 1) {
     total = total + a[i];
   }
-  return total / len(a);
+  return total / width(a);
 }
 
 stddeviation(a) {
    
-    newarr = new [len(a)];
+    newarr = new [width(a)];
     
     mean = average(a);
-    for(i = 0; i < len(a); i = i+1) {
+    for(i = 0; i < width(a); i = i+1) {
         newarr[i] = (a[i] - mean) ^ 2;
     }
     

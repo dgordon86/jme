@@ -18,9 +18,14 @@ type bstmt =
   | Mat of int * int (* matrix init *)
   | Lodv of int   (* Load element of vector global *)
   | Lfpv of int   (* Load element of vector local *)
+  | Lodm of int   (* Load element of matrix global *)
+  | Lfpm of int   (* Load element of matrix local *)
   | Ulvec of int  (* Update element of vector local *)
   | Ugvec of int  (* Update element of vector global *)
+  | Ulmat of int  (* Update element of matrix local *)
+  | Ugmat of int  (* Update element of matrix global *)
   | Veci          (* create an empty vector and push on to stack *)
+  | Mati          (* create an empty matrix and push on to stack *)
   | Hlt           (* Terminate *)
 
 type prog = {
@@ -57,9 +62,14 @@ let string_of_stmt = function
   | Mat(i,e) -> "Mat " ^ string_of_int i ^ " " ^ string_of_int e
   | Lodv(i) -> "Lodv " ^ string_of_int i
   | Lfpv(i) -> "Lfpv " ^ string_of_int i
+  | Lodm(i) -> "Lodm " ^ string_of_int i
+  | Lfpm(i) -> "Lfpm " ^ string_of_int i
   | Ulvec(i) -> "Ulvec " ^ string_of_int i
   | Ugvec(i) -> "Ugvec " ^ string_of_int i
+  | Ulmat(i) -> "Ulmat " ^ string_of_int i
+  | Ugmat(i) -> "Ugmat " ^ string_of_int i
   | Veci -> "Veci"
+  | Mati -> "Mati"  
   | Hlt    -> "Hlt"
 
 let string_of_prog p =

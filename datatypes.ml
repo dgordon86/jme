@@ -124,19 +124,28 @@ let greatthneq a b =
 let stripQuotes str =
     String.sub str 1 ((String.length str) -2)
 
-let to_Float = function
+let to_Float i = 
+    match i with
     Int i -> float_of_int i
     | Float i -> i
-    |_ -> raise(Failure "not a float or int")
+    |_ -> raise(Failure ("Expected Float or Integer got " ^ string_of_dtype i ^ " " ^ string_of_expr i))
 
-let to_Bool = function
+let to_Bool i = 
+    match i with
     Boolean i -> i
-    |_ -> raise(Failure "invalid boolean")
+    |_ -> raise(Failure ("Expected Boolean got " ^ string_of_dtype i ^ " " ^ string_of_expr i))
 
-let to_Vector = function
+let to_Vector i = 
+    match i with
     Vector i -> i
-    |_ -> raise(Failure "invalid vector")
+    |_ -> raise(Failure ("Expected Vector got " ^ string_of_dtype i ^ " " ^ string_of_expr i))
     
-let to_Int = function
+let to_Matrix i = 
+    match i with
+    Matrix i -> i
+    |_ -> raise(Failure ("Expected Matrix got " ^ string_of_dtype i ^ " " ^ string_of_expr i))
+    
+let to_Int i= 
+    match i with
     Int i  -> i
-    | _     -> raise(Failure "invalid integer")
+    | _     -> raise(Failure ("Expected Integer got " ^ string_of_dtype i ^ " " ^ string_of_expr i))
