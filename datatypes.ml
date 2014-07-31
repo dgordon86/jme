@@ -1,11 +1,12 @@
 (* Data types of language *)
 type dtypes =
-    Null
-    |Int of int
-    |Float of float
-    |Boolean of bool
-    |String of string
+      Null
+    | Int of int
+    | Float of float
+    | Boolean of bool
+    | String of string
     | Vector of dtypes array
+    | Matrix of dtypes array array
     
     
 let string_of_dtype = function
@@ -14,6 +15,7 @@ let string_of_dtype = function
     | Boolean(s) -> "Boolean"
     | String(s) -> "String"
     | Vector(s) -> "Vector"
+    | Matrix(s) -> "Matrix"
     | Null -> "Null"
 
 let rec string_of_expr = function
@@ -22,6 +24,9 @@ let rec string_of_expr = function
     | Boolean(s) -> string_of_bool s
     | String(s) -> s
     | Vector(s) -> "[" ^ String.concat "," (List.map string_of_expr (Array.to_list s)) ^ "]"
+    | Matrix(s) ->  "[" ^ (String.concat ";\n " (List.map (fun lexpr -> "" ^ 
+                        (String.concat "," (List.map (fun e -> string_of_expr e) (Array.to_list lexpr) ))  ^ "" ) (Array.to_list s)))
+                ^ "]"
     | Null -> "null"
 
 let getVectElement i v =

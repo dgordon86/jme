@@ -1,4 +1,4 @@
-OBJS = ast.cmo parser.cmo scanner.cmo interpret.cmo datatypes.cmo bytecode.cmo compile.cmo execute.cmo jme.cmo
+OBJS = ast.cmo parser.cmo scanner.cmo interpret.cmo datatypes.cmo util.cmo bytecode.cmo compile.cmo execute.cmo jme.cmo
 
 TESTS = \
 arith1 \
@@ -20,7 +20,7 @@ var1 \
 while1
 
 TARFILES = Makefile testall.sh scanner.mll parser.mly \
-	ast.ml bytecode.ml interpret.ml compile.ml execute.ml datatypes.ml jme.ml \
+	ast.ml bytecode.ml interpret.ml compile.ml execute.ml datatypes.ml util.ml jme.ml \
 	$(TESTS:%=tests/test-%.jme) \
 	$(TESTS:%=tests/test-%.out)
 
@@ -56,8 +56,8 @@ ast.cmo:
 ast.cmx: 
 bytecode.cmo: datatypes.cmo ast.cmo 
 bytecode.cmx: datatypes.cmx ast.cmx 
-compile.cmo: datatypes.cmo bytecode.cmo ast.cmo 
-compile.cmx: datatypes.cmx bytecode.cmx ast.cmx 
+compile.cmo: util.cmo datatypes.cmo bytecode.cmo ast.cmo 
+compile.cmx: util.cmx datatypes.cmx bytecode.cmx ast.cmx 
 datatypes.cmo :
 datatypes.cmx :
 execute.cmo: datatypes.cmo bytecode.cmo ast.cmo 
@@ -73,3 +73,5 @@ parser.cmx: ast.cmx parser.cmi
 scanner.cmo: parser.cmi 
 scanner.cmx: parser.cmx 
 parser.cmi: ast.cmo 
+util.cmo: datatypes.cmo ast.cmo 
+util.cmx: datatypes.cmx ast.cmx

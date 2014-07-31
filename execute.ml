@@ -21,8 +21,19 @@ let execute_prog prog =
   let stack = Array.make 1024 Null
   and globals = Array.make prog.num_globals Null in
   
+  
+  let fillMatrix x y top = 
+    let m = Array.make_matrix x y Null in
+        for i = 0 to x -1 do
+            for j = 0 to y -1 do
+                m.(i).(j) <- stack.(top + (i*(y) +j))
+            done;
+        done;
+        m
+  in
+  
   let fillVector n top =
-    if n == 0 then Array.make 1 Null
+    if n == 0 then Array.make 0 Null
         else let v = Array.make n Null in
             for i = 0 to n - 1 do
                 v.(i) <- stack.(top - ((n-1) - i))
@@ -62,6 +73,7 @@ let execute_prog prog =
   | Bne i   -> exec fp (sp-1) (pc + if to_Bool(nequal stack.(sp-1) (Boolean false)) then i else 1)
   | Bra i   -> exec fp sp (pc+i)
   | Vec i -> stack.(sp-i) <- Vector(fillVector i (sp -1)); exec fp (sp-i +1) (pc+1)
+  | Mat (x,y) -> stack.(sp - (x*y)) <- Matrix( fillMatrix x y (sp - x*y)); exec fp (sp - x*y +1) (pc+1)
   | Veci -> stack.(sp-1) <- Vector(Array.make (to_Int(stack.(sp-1))) Null); exec fp sp (pc+1)
   | Lodv i -> let nth = stack.(sp-1) in
                 stack.(sp-1) <- getVectElement nth globals.(i); exec fp (sp) (pc+1)

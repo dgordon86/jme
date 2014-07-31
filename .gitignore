@@ -2,6 +2,7 @@
 *.cmo
 *.c.out
 *.diff
+*.output
 .DS_Store
 parser.ml
 parser.mli

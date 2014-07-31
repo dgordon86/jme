@@ -78,6 +78,14 @@ let translate (globals, functions) =
 	  (List.concat (List.map expr (List.rev actuals))) @
 	  [Jsr (StringMap.find fname env.function_index) ]   
         with Not_found -> raise (Failure ("undefined function " ^ fname)))
+      | Matrix m -> if List.length m = 1 then let vect = List.hd m in 
+                        (List.concat (List.map expr vect)) @ [Vec (List.length vect) ] 
+                    else 
+                      let dimx = List.length m in
+                      let dimy = List.length (List.hd m) in
+                      ignore(Util.checkmatrix m); (List.concat (List.map expr (List.concat m))) @ [Mat (dimx,dimy) ] 
+                     
+                        
       | Vector v -> (List.concat (List.map expr v)) @ [Vec (List.length v) ]
       | VectorInit e -> expr e @ [Veci]
       | Noexpr -> []

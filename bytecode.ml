@@ -15,6 +15,7 @@ type bstmt =
   | Bne of int    (* Branch relative if top-of-stack is non-zero *)
   | Bra of int    (* Branch relative *)
   | Vec of int    (* vector init *)
+  | Mat of int * int (* matrix init *)
   | Lodv of int   (* Load element of vector global *)
   | Lfpv of int   (* Load element of vector local *)
   | Ulvec of int  (* Update element of vector local *)
@@ -53,6 +54,7 @@ let string_of_stmt = function
   | Beq(i) -> "Beq " ^ string_of_int i
   | Bra(i) -> "Bra " ^ string_of_int i
   | Vec(i) -> "Vect " ^ string_of_int i
+  | Mat(i,e) -> "Mat " ^ string_of_int i ^ " " ^ string_of_int e
   | Lodv(i) -> "Lodv " ^ string_of_int i
   | Lfpv(i) -> "Lfpv " ^ string_of_int i
   | Ulvec(i) -> "Ulvec " ^ string_of_int i

@@ -13,6 +13,7 @@ type expr =
   | VectRef of string * expr
   | Vector of expr list
   | VectorInit of expr
+  | Matrix of expr list list
   | Noexpr
 
 type stmt =
@@ -50,6 +51,8 @@ let rec string_of_expr = function
   | Assign(v, e) -> v ^ " = " ^ string_of_expr e
   | Call(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
+  | Matrix (m) -> "\n[" ^ (String.concat ";\n " (List.map (fun lexpr -> "" ^ (String.concat "," (List.map (fun e -> string_of_expr e) lexpr ))  ^ "" ) m))
+                ^ "]"
   | Vector(v) -> "[" ^ String.concat "," (List.map string_of_expr v) ^ "]"
   | VectorInit(e) -> "new " ^ "[" ^ (string_of_expr e) ^ "]"
   | VectRef(v, e) -> v ^ "[" ^ string_of_expr e ^ "]"
