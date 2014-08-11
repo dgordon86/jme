@@ -24,11 +24,27 @@ let getHeight s =
     match s with
     | Vector(s) -> Int (1)
     | Matrix(s) -> Int (Array.length s)
-    |_ -> raise(Failure(("width() cannot be applied to type " ^ Datatypes.string_of_dtype s ^ " " ^ Datatypes.string_of_expr s)))
+    |_ -> raise(Failure(("width() cannot be applied to type " ^ Datatypes.string_of_dtype s ^ " " ^ Datatypes.string_of_expr s)))    
     
-(*let updateEntry index data nvalue = 
-    match index, data with
-    Int(index), Vector(data) -> data.(index) <- nvalue
-    | String(index), JMap(data) ->
-        StringMap.add index nvalue data
-    |_ -> raise(Failure("unexpected update of types"))*)
+let buf_len = 8192
+
+let input_all ic =
+  let rec loop acc total buf ofs =
+    let n = input ic buf ofs (buf_len - ofs) in
+    if n = 0 then
+      let res = String.create total in
+      let pos = total - ofs in
+      let _ = String.blit buf 0 res pos ofs in
+      let coll pos buf =
+        let new_pos = pos - buf_len in
+        String.blit buf 0 res new_pos buf_len;
+        new_pos in
+      let _ = List.fold_left coll pos acc in
+      res
+    else
+      let new_ofs = ofs + n in
+      let new_total = total + n in
+      if new_ofs = buf_len then
+        loop (buf :: acc) new_total (String.create buf_len) 0
+      else loop acc new_total buf new_ofs in
+  loop [] 0 (String.create buf_len) 0

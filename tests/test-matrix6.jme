@@ -1,25 +1,3 @@
-transpose(mat) {
-
-tran = new [width(mat)][height(mat)];
-
-/* check if its actually a vector */
-if(height(mat) == 1) {
-    for(i = 0; i < width(mat); i = i +1) {
-        tran[i][0] = mat[i];
-    }
-}
-else {
-for (i = 0 ; i < height(mat) ; i = i + 1) {
-    for(j=0; j < width(mat); j = j + 1) {
-        tran[j][i] = mat[i][j];
-    }
-}
-}
-
-return tran;
-
-}
-
 
 main()
 {

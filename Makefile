@@ -60,18 +60,18 @@ compile.cmo: util.cmo datatypes.cmo bytecode.cmo ast.cmo
 compile.cmx: util.cmx datatypes.cmx bytecode.cmx ast.cmx 
 datatypes.cmo :
 datatypes.cmx :
-execute.cmo: datatypes.cmo bytecode.cmo ast.cmo 
-execute.cmx: datatypes.cmx bytecode.cmx ast.cmx 
+execute.cmo: util.cmo datatypes.cmo bytecode.cmo ast.cmo 
+execute.cmx: util.cmx datatypes.cmx bytecode.cmx ast.cmx 
 interpret.cmo: ast.cmo 
 interpret.cmx: ast.cmx 
 jme.cmo: scanner.cmo parser.cmi interpret.cmo execute.cmo compile.cmo \
-    bytecode.cmo ast.cmo 
+    bytecode.cmo ast.cmo util.cmi
 jme.cmx: scanner.cmx parser.cmx interpret.cmx execute.cmx compile.cmx \
-    bytecode.cmx ast.cmx 
+    bytecode.cmx ast.cmx util.cmx
 parser.cmo: ast.cmo parser.cmi 
 parser.cmx: ast.cmx parser.cmi 
 scanner.cmo: parser.cmi 
 scanner.cmx: parser.cmx 
 parser.cmi: ast.cmo 
-util.cmo: datatypes.cmo ast.cmo 
-util.cmx: datatypes.cmx ast.cmx
+util.cmo: datatypes.cmo ast.cmo
+util.cmx: datatypes.cmx ast.cmx 

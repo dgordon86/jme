@@ -1,22 +1,42 @@
 
 mean(a)
 {
-  var i;
-  var total;
+
   total = 0;
-  for (i = 0 ; i < len(a) ; i = i + 1) {
+  for (i = 0 ; i < width(a) ; i = i + 1) {
     total = a[i] + total;
   }
-  return total / len(a);
+  return total / width(a);
 }
 
 stdev(a)
 {
-  var i;
-  var total;
+
   total = 0;
-  for (i = 0 ; i < len(a) ; i = i + 1) {
+  for (i = 0 ; i < width(a) ; i = i + 1) {
     total = a[i] + total;
   }
-  return total / len(a);
+  return total / width(a);
+}
+
+transpose(mat) {
+
+tran = new [width(mat)][height(mat)];
+
+/* check if its actually a vector */
+if(height(mat) == 1) {
+    for(i = 0; i < width(mat); i = i +1) {
+        tran[i][0] = mat[i];
+    }
+}
+else {
+for (i = 0 ; i < height(mat) ; i = i + 1) {
+    for(j=0; j < width(mat); j = j + 1) {
+        tran[j][i] = mat[i][j];
+    }
+}
+}
+
+return tran;
+
 }

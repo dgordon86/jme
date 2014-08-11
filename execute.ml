@@ -96,8 +96,12 @@ let execute_prog prog =
   | Ulvec i -> if is_Int (stack.(sp-1)) then  updateVectElement stack.(sp-1) stack.(fp+i) stack.(sp-2)
                     else  stack.(fp+i) <- JMap((StringMap.add (to_String(stack.(sp-1))) stack.(sp-2) (to_JMap(stack.(fp+i)))));
                  exec fp sp (pc+1)
-  | Ugvec i -> let indx = stack.(sp-1) and nval = stack.(sp-2) and svec = (to_Vector globals.(i)) in 
-                svec.(to_Int indx) <- nval;
+  | Ugvec i -> if is_Int (stack.(sp-1)) then  updateVectElement stack.(sp-1) globals.(i) stack.(sp-2)
+                    else  globals.(i) <- JMap((StringMap.add (to_String(stack.(sp-1))) stack.(sp-2) (to_JMap(globals.(i)))));
+  
+                
+                (*let indx = stack.(sp-1) and nval = stack.(sp-2) and svec = (to_Vector globals.(i)) in 
+                svec.(to_Int indx) <- nval;*)
                  exec fp sp (pc+1)
   | Ulmat i -> let x = stack.(sp-2) and y = stack.(sp-1) and nval = stack.(sp-3) and svec = (to_Matrix stack.(fp+i)) in 
                 svec.(to_Int x).(to_Int y) <- nval;
