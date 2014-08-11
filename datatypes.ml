@@ -1,4 +1,6 @@
 (* Data types of language *)
+module StringMap = Map.Make(String)
+
 type dtypes =
       Null
     | Int of int
@@ -7,6 +9,7 @@ type dtypes =
     | String of string
     | Vector of dtypes array
     | Matrix of dtypes array array
+    | JMap of dtypes StringMap.t
     
     
 let string_of_dtype = function
@@ -16,6 +19,7 @@ let string_of_dtype = function
     | String(s) -> "String"
     | Vector(s) -> "Vector"
     | Matrix(s) -> "Matrix"
+    | JMap(s) -> "Map"
     | Null -> "Null"
 
 let rec string_of_expr = function
@@ -27,12 +31,21 @@ let rec string_of_expr = function
     | Matrix(s) ->  "[" ^ (String.concat ";\n " (List.map (fun lexpr -> "" ^ 
                         (String.concat "," (List.map (fun e -> string_of_expr e) (Array.to_list lexpr) ))  ^ "" ) (Array.to_list s)))
                 ^ "]"
+    | JMap(s) -> let string_pairs k v str= (k ^ "=>" ^ 
+                        string_of_expr v ^ ", " ^ str) in
+                "|" ^ (StringMap.fold string_pairs s "") ^ "|"
     | Null -> "null"
 
 let getVectElement i v =
     match i, v with
     Int(i), Vector(v) -> v.(i)
+    | String(s), JMap(m) -> StringMap.find s m
     |_ -> raise(Failure("invalid vector access"))
+
+let updateVectElement i v nv =
+    match i, v with
+    Int(i), Vector(v) -> v.(i) <- nv
+    |_ -> raise(Failure("Invalid update structure"))
     
 let printstack stack =
     for i = 0 to (Array.length stack -1) do
@@ -139,13 +152,33 @@ let to_Vector i =
     match i with
     Vector i -> i
     |_ -> raise(Failure ("Expected Vector got " ^ string_of_dtype i ^ " " ^ string_of_expr i))
+
+let to_JMap m =
+    match m with
+    JMap m -> m
+     |_ -> raise(Failure ("Expected Map got " ^ string_of_dtype m ^ " " ^ string_of_expr m))
     
 let to_Matrix i = 
     match i with
     Matrix i -> i
     |_ -> raise(Failure ("Expected Matrix got " ^ string_of_dtype i ^ " " ^ string_of_expr i))
+
+let to_Map m =
+    match m with
+    JMap m -> m
+    |_ -> raise(Failure ("Expected Map got " ^ string_of_dtype m ^ " " ^ string_of_expr m))
     
 let to_Int i= 
     match i with
     Int i  -> i
     | _     -> raise(Failure ("Expected Integer got " ^ string_of_dtype i ^ " " ^ string_of_expr i))
+    
+let is_Int i =
+    match i with
+    Int i -> true
+    |_ -> false
+    
+let to_String s =
+    match s with
+    String s -> s
+    | _ -> raise(Failure ("Expected String got " ^ string_of_dtype s ^ " " ^ string_of_expr s))

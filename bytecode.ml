@@ -16,6 +16,7 @@ type bstmt =
   | Bra of int    (* Branch relative *)
   | Vec of int    (* vector init *)
   | Mat of int * int (* matrix init *)
+  | Map of int    (* map init *)
   | Lodv of int   (* Load element of vector global *)
   | Lfpv of int   (* Load element of vector local *)
   | Lodm of int   (* Load element of matrix global *)
@@ -60,6 +61,7 @@ let string_of_stmt = function
   | Bra(i) -> "Bra " ^ string_of_int i
   | Vec(i) -> "Vect " ^ string_of_int i
   | Mat(i,e) -> "Mat " ^ string_of_int i ^ " " ^ string_of_int e
+  | Map(i) -> "Map " ^ string_of_int i
   | Lodv(i) -> "Lodv " ^ string_of_int i
   | Lfpv(i) -> "Lfpv " ^ string_of_int i
   | Lodm(i) -> "Lodm " ^ string_of_int i

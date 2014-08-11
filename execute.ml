@@ -15,8 +15,8 @@ open Util
    ...
    
    Arg n *)
-   
 
+module StringMap = Map.Make(String)
 
 let execute_prog prog =
   let stack = Array.make 1024 Null
@@ -40,6 +40,10 @@ let execute_prog prog =
                 v.(i) <- stack.(top - ((n-1) - i))
             done;
             v in
+  let rec fillMap t n map =
+    if n == t then map
+        else
+            fillMap (t+2) (n) (StringMap.add (to_String stack.(t+1)) stack.(t) map) in
 
   let rec exec fp sp pc = match prog.text.(pc) with
     Lit i  -> stack.(sp) <- i; exec fp (sp+1) (pc+1)
@@ -78,6 +82,7 @@ let execute_prog prog =
   | Mat (x,y) -> stack.(sp - (x*y)) <- Matrix( fillMatrix x y (sp - x*y)); exec fp (sp - x*y +1) (pc+1)
   | Veci -> stack.(sp-1) <- Vector(Array.make (to_Int(stack.(sp-1))) Null); exec fp sp (pc+1)
   | Mati -> stack.(sp-2) <- Matrix(Array.make_matrix (to_Int(stack.(sp-2))) (to_Int(stack.(sp-1))) Null);exec fp (sp-1) (pc+1) 
+  | Map i -> stack.(sp - 2*i) <- JMap(fillMap (sp-2*i ) sp StringMap.empty); exec fp (sp-2*i+1) (pc+1)
   | Lodv i -> let nth = stack.(sp-1) in
                 stack.(sp-1) <- getVectElement nth globals.(i); exec fp (sp) (pc+1)
   | Lfpv i -> let nth = stack.(sp-1) in
@@ -88,8 +93,8 @@ let execute_prog prog =
   | Lodm i -> let x = stack.(sp-2) in
               let y = stack.(sp-1) in
                 stack.(sp-2) <- getMatxElement x y globals.(i); exec fp (sp -1) (pc+1)
-  | Ulvec i -> let indx = stack.(sp-1) and nval = stack.(sp-2) and svec = (to_Vector stack.(fp+i)) in 
-                svec.(to_Int indx) <- nval;
+  | Ulvec i -> if is_Int (stack.(sp-1)) then  updateVectElement stack.(sp-1) stack.(fp+i) stack.(sp-2)
+                    else  stack.(fp+i) <- JMap((StringMap.add (to_String(stack.(sp-1))) stack.(sp-2) (to_JMap(stack.(fp+i)))));
                  exec fp sp (pc+1)
   | Ugvec i -> let indx = stack.(sp-1) and nval = stack.(sp-2) and svec = (to_Vector globals.(i)) in 
                 svec.(to_Int indx) <- nval;

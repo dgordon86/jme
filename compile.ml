@@ -84,7 +84,7 @@ let translate (globals, functions) =
                       let dimx = List.length m in
                       let dimy = List.length (List.hd m) in
                       ignore(Util.checkmatrix m); (List.concat (List.map expr (List.concat m))) @ [Mat (dimx,dimy) ] 
-  
+      | JMap m -> List.concat (List.map (fun (k,v) -> (expr v) @ (expr k) ) m) @ [Map ( List.length m) ]
       | VectorInit e -> expr e @ [Veci]
       | MatrixInit (x,y) -> expr x @ expr y @ [Mati]
       | MatxRef (s, x, y) -> expr x @ expr y @

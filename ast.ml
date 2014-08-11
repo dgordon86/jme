@@ -1,5 +1,6 @@
 type op = Add | Sub | Mult | Div | Exponent | Equal | Neq | Less | Leq | Greater | Geq
  
+ 
 type expr =
     Literal of int
   | Float of float
@@ -16,6 +17,7 @@ type expr =
   | MatrixInit of expr * expr
   | MatxRef of string * expr * expr
   | MatxAssign of string * expr * expr * expr
+  | JMap of (expr * expr ) list
   | Noexpr
 
 type stmt =
@@ -55,6 +57,7 @@ let rec string_of_expr = function
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | Matrix (m) -> "\n[" ^ (String.concat ";\n " (List.map (fun lexpr -> "" ^ (String.concat "," (List.map (fun e -> string_of_expr e) lexpr ))  ^ "" ) m))
                 ^ "]"
+  | JMap (m) -> "|" ^ String.concat ", " (List.map (fun (k,v) -> string_of_expr k ^ "=>" ^ string_of_expr v) m) ^ "|"
   | VectorInit(e) -> "new " ^ "[" ^ (string_of_expr e) ^ "]"
   | MatrixInit(x,y) -> "new " ^ "[" ^ (string_of_expr x) ^ "] [" ^ (string_of_expr y) ^ "]"
   | MatxRef(v, x, y) -> v ^ "[" ^ string_of_expr x ^ "][" ^ string_of_expr y ^ "]"

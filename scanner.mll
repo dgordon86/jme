@@ -30,6 +30,8 @@ rule token = parse
 | "return" { RETURN }
 | "var"    { VAR }
 | "new"    { NEW }
+| "=>"     { POINTER }
+| "|"      { BAR }
 | "true" | "false" as boolean { BOOLEAN(bool_of_string boolean)}
 | '"'[^ '\r' '\n' '\"']*'"' as str {STRING (str)}
 | ['-']?['0'-'9']+['.']['0'-'9']+ as lxm { FLOAT(float_of_string lxm) }

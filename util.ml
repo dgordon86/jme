@@ -1,5 +1,6 @@
 open Datatypes
 
+
 let checkmatrix m = 
             let size = List.length (List.hd m) in
              List.iter (fun chksize -> 
@@ -24,3 +25,10 @@ let getHeight s =
     | Vector(s) -> Int (1)
     | Matrix(s) -> Int (Array.length s)
     |_ -> raise(Failure(("width() cannot be applied to type " ^ Datatypes.string_of_dtype s ^ " " ^ Datatypes.string_of_expr s)))
+    
+(*let updateEntry index data nvalue = 
+    match index, data with
+    Int(index), Vector(data) -> data.(index) <- nvalue
+    | String(index), JMap(data) ->
+        StringMap.add index nvalue data
+    |_ -> raise(Failure("unexpected update of types"))*)
