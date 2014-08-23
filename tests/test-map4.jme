@@ -1,0 +1,12 @@
+
+main()
+{
+ lmap = | "a" => 5, "b" =>3, "c" => "barr" , "zz" => "fist" |;
+ 
+ exists = mhas(lmap, "a");
+ print(exists);
+ 
+ notexists = mhas(lmap, "foo");
+ print(notexists);
+
+}

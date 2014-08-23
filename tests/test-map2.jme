@@ -1,10 +1,13 @@
 var globmap;
 
+printglob() {
+    print(globmap["a"]);
+}
 main()
 {
  globmap = | "a" => 5, "b" =>3, "c" => "barr" , "zz" => "fist" |;
  globmap["a"] = 8;
  
- print(globmap["a"]);
+ printglob();
 
 }

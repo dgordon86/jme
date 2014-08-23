@@ -37,6 +37,14 @@ let translate (globals, functions) =
   let built_in_functions = StringMap.add "height" (-3) built_in_functions in
   let built_in_functions = StringMap.add "sqrt" (-4) built_in_functions in
   let built_in_functions = StringMap.add "sort" (-5) built_in_functions in
+  let built_in_functions = StringMap.add "mhas" (-6) built_in_functions in
+  let built_in_functions = StringMap.add "is_Int" (-7) built_in_functions in
+  let built_in_functions = StringMap.add "is_Float" (-8) built_in_functions in
+  let built_in_functions = StringMap.add "is_Bool" (-9) built_in_functions in
+  let built_in_functions = StringMap.add "is_String" (-10) built_in_functions in
+  let built_in_functions = StringMap.add "is_Vector" (-11) built_in_functions in
+  let built_in_functions = StringMap.add "is_Matrix" (-12) built_in_functions in
+  let built_in_functions = StringMap.add "is_Map" (-13) built_in_functions in
   let function_indexes = string_map_pairs built_in_functions
       (enum 1 1 (List.map (fun f -> f.fname) functions)) in
 

@@ -18,13 +18,19 @@ let getWidth s =
     match s with
     | Vector(s) -> Int (Array.length (s))
     | Matrix(s) -> Int (Array.length s.(0))
+    | JMap(m) -> Int(StringMap.cardinal m)
     |_ -> raise(Failure(("width() cannot be applied to type " ^ Datatypes.string_of_dtype s ^ " " ^ Datatypes.string_of_expr s)))
     
 let getHeight s = 
     match s with
     | Vector(s) -> Int (1)
     | Matrix(s) -> Int (Array.length s)
-    |_ -> raise(Failure(("width() cannot be applied to type " ^ Datatypes.string_of_dtype s ^ " " ^ Datatypes.string_of_expr s)))    
+    |_ -> raise(Failure(("width() cannot be applied to type " ^ Datatypes.string_of_dtype s ^ " " ^ Datatypes.string_of_expr s)))
+
+let sortVect s = 
+    match s with
+    | Vector(s) -> Array.sort compare s
+    |_ -> raise(Failure(("width() cannot be applied to type " ^ Datatypes.string_of_dtype s ^ " " ^ Datatypes.string_of_expr s))) 
     
 let buf_len = 8192
 

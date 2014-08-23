@@ -61,7 +61,8 @@ let execute_prog prog =
       | Less    -> lessthn op1 op2
       | Leq     -> lessthneq op1 op2
       | Greater -> greatthn op1 op2
-      | Geq     -> greatthneq op1 op2) ;
+      | Geq     -> greatthneq op1 op2
+      | Mod     -> remainder op1 op2) ;
       exec fp (sp-1) (pc+1)
   | Lod i   -> stack.(sp)   <- globals.(i)  ; exec fp (sp+1) (pc+1)
   | Str i   -> globals.(i)  <- stack.(sp-1) ; exec fp sp     (pc+1)
@@ -71,6 +72,15 @@ let execute_prog prog =
   | Jsr(-2) -> stack.(sp-1) <- getWidth stack.(sp-1); exec fp sp (pc+1)
   | Jsr(-3) -> stack.(sp-1) <- getHeight stack.(sp-1); exec fp sp (pc+1)
   | Jsr(-4) -> stack.(sp-1) <- Float (sqrt (to_Float stack.(sp-1))); exec fp sp (pc+1)
+  | Jsr(-5) -> sortVect stack.(sp-1); exec fp sp (pc+1)
+  | Jsr(-6) -> stack.(sp-1) <- keyExists stack.(sp-2) stack.(sp-1); exec fp sp (pc+1)
+  | Jsr(-7) -> stack.(sp-1) <- Boolean( is_Int stack.(sp-1)); exec fp sp (pc+1)
+  | Jsr(-8) -> stack.(sp-1) <- Boolean( is_Float stack.(sp-1)); exec fp sp (pc+1)
+  | Jsr(-9) -> stack.(sp-1) <- Boolean( is_Bool stack.(sp-1)); exec fp sp (pc+1)
+  | Jsr(-10) -> stack.(sp-1) <- Boolean( is_String stack.(sp-1)); exec fp sp (pc+1)
+  | Jsr(-11) -> stack.(sp-1) <- Boolean( is_Vector stack.(sp-1)); exec fp sp (pc+1)
+  | Jsr(-12) -> stack.(sp-1) <- Boolean( is_Matrix stack.(sp-1)); exec fp sp (pc+1)
+  | Jsr(-13) -> stack.(sp-1) <- Boolean( is_JMap stack.(sp-1)); exec fp sp (pc+1)
   | Jsr i   -> stack.(sp)   <- Int (pc + 1)       ; exec fp (sp+1) i
   | Ent i   -> stack.(sp)   <- Int fp           ; exec sp (sp+i+1) (pc+1)
   | Rts i   -> let new_fp = to_Int stack.(fp) and new_pc = to_Int stack.(fp-1) in

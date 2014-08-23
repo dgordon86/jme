@@ -1,0 +1,39 @@
+main()
+{
+ int = 8;
+ float = 8.8;
+ str = "String";
+ bool = true;
+ vec = [1,2,3];
+ matx = [1,2; 3,4];
+ map = | "a" => "a", "b" => "b", "c" => "c" |;
+ 
+ print("Check Int");
+ print(is_Int(int));
+ print(is_Int(float));
+
+ print("Check Float");
+ print(is_Float(float));
+ print(is_Float(int));
+ 
+ print("Check String");
+ print(is_String(str));
+ print(is_String(int));
+ 
+ print("Check Boolean");
+ print(is_Bool(bool));
+ print(is_Bool(str));
+ 
+ print("Check Vector");
+ print(is_Vector(vec));
+ print(is_Vector(bool));
+ 
+ print("Check Matrix");
+ print(is_Matrix(matx));
+ print(is_Matrix(vec));
+ 
+ print("Check Map");
+ print(is_Map(map));
+ print(is_Map(matx));
+ 
+}

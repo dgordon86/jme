@@ -41,6 +41,11 @@ let getVectElement i v =
     Int(i), Vector(v) -> v.(i)
     | String(s), JMap(m) -> StringMap.find s m
     |_ -> raise(Failure("invalid vector access"))
+    
+let keyExists i v =
+    match i, v with
+     String(s), JMap(m) -> if StringMap.mem s m then Boolean(true) else Boolean(false)
+    |_ -> raise(Failure("invalid map access"))
 
 let updateVectElement i v nv =
     match i, v with
@@ -79,9 +84,7 @@ let multiply a b =
 
 let divide a b =
     match a, b with
-    Int(a), Int(b) -> (* if division by integer yields a remainder, implicitly convert to float *)
-                      if a mod b > 0 then 
-                      Float((float_of_int a) /. (float_of_int b)) else Int (a / b)
+    Int(a), Int(b) -> Int (a / b)
     | Float(a), Float(b) -> Float (a /. b)
     | Int(a), Float(b) -> Float ((float_of_int a) /. b)
     | Float(a), Int(b) -> Float (a /. (float_of_int b))
@@ -95,6 +98,12 @@ let power a b =
     | Int(a), Float(b) -> Float ((float_of_int a) ** b)
     | Float(a), Int(b) -> Float (a ** (float_of_int b))
     |_ -> raise(Failure("invalid arguments for exponents"))
+
+let remainder a b =
+    match a, b with
+    Int(a), Int(b) -> Int(a mod b)
+    | Float(a), Float(b) -> Float(mod_float a b)
+    |_ -> raise(Failure("invalid arguments for remainder"))
     
 let equal a b =
     match a, b with
@@ -173,12 +182,42 @@ let to_Int i=
     Int i  -> i
     | _     -> raise(Failure ("Expected Integer got " ^ string_of_dtype i ^ " " ^ string_of_expr i))
     
+let to_String s =
+    match s with
+    String s -> s
+    | _ -> raise(Failure ("Expected String got " ^ string_of_dtype s ^ " " ^ string_of_expr s))
+    
 let is_Int i =
     match i with
     Int i -> true
     |_ -> false
     
-let to_String s =
+let is_Float f =
+    match f with
+    Float f -> true
+    |_ -> false
+    
+let is_String s =
     match s with
-    String s -> s
-    | _ -> raise(Failure ("Expected String got " ^ string_of_dtype s ^ " " ^ string_of_expr s))
+    String s -> true
+    |_ -> false
+    
+let is_Bool s =
+    match s with
+    Boolean s -> true
+    |_ -> false
+    
+let is_Vector s =
+    match s with
+    Vector s -> true
+    |_ -> false
+    
+let is_Matrix s =
+    match s with
+    Matrix s -> true
+    |_ -> false
+    
+let is_JMap s =
+    match s with
+    JMap s -> true
+    |_ -> false

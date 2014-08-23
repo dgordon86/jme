@@ -1,4 +1,4 @@
-type op = Add | Sub | Mult | Div | Exponent | Equal | Neq | Less | Leq | Greater | Geq
+type op = Add | Sub | Mult | Div | Exponent | Equal | Neq | Less | Leq | Greater | Geq | Mod
  
  
 type expr =
@@ -48,6 +48,7 @@ let rec string_of_expr = function
       string_of_expr e1 ^ " " ^
       (match o with
 	Add -> "+" | Sub -> "-" | Mult -> "*" | Div -> "/"
+      | Mod -> "%"
       | Exponent -> "^"
       | Equal -> "==" | Neq -> "!="
       | Less -> "<" | Leq -> "<=" | Greater -> ">" | Geq -> ">=") ^ " " ^

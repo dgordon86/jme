@@ -1,0 +1,8 @@
+
+main()
+{
+ lmap = | "a" => 5, "b" =>3, "c" => "barr" , "xx" => 42.2, "zz" => "fist" |;
+ 
+ print(width(lmap));
+
+}
