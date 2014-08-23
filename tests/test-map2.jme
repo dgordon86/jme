@@ -5,7 +5,7 @@ printglob() {
 }
 main()
 {
- globmap = | "a" => 5, "b" =>3, "c" => "barr" , "zz" => "fist" |;
+ globmap = new| "a" => 5, "b" =>3, "c" => "barr" , "zz" => "fist" |;
  globmap["a"] = 8;
  
  printglob();

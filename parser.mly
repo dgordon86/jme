@@ -18,7 +18,7 @@
 %left EQ NEQ
 %left LT GT LEQ GEQ 
 %left PLUS MINUS
-%left TIMES DIVIDE
+%left TIMES DIVIDE MOD
 %left EXPONENT
 
 %start program
@@ -101,7 +101,7 @@ expr:
   | ID LBRACKET expr RBRACKET ASSIGN expr { VectAssign($1,$3, $6) }
   | ID LBRACKET expr RBRACKET LBRACKET expr RBRACKET ASSIGN expr { MatxAssign($1,$3, $6, $9) }
   | LBRACKET mat_opt RBRACKET {Matrix($2) } 
-  | BAR keyvalue_opt BAR {JMap($2) }
+  | NEW BAR keyvalue_opt BAR {JMap($3) }
   | LPAREN expr RPAREN { $2 }
 
 actuals_opt:
@@ -111,7 +111,7 @@ actuals_opt:
 actuals_list:
     expr                    { [$1] }
   | actuals_list COMMA expr { $3 :: $1 }
-   
+  
    mrow:
 	 { [] }
 	| expr { [$1] }
@@ -121,14 +121,11 @@ actuals_list:
 	 mrow { [List.rev $1] }
 	| mat_opt SEMI mrow { $1 @ [List.rev $3] }
     
-    keyvalue_opt:
+     keyvalue_opt:
     { [] }
     | keyvalue_list { List.rev $1 }
     
     keyvalue_list:
     expr POINTER expr { [$1, $3] }
     | keyvalue_list COMMA expr POINTER expr {($3, $5)::$1 }
-    
-   
-   
-   
+

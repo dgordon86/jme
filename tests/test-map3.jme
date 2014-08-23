@@ -3,7 +3,7 @@ main()
 {
  foo = "foo";
  
- lmap = | "a" => 5, "b" =>3, foo => "bar" , "zz" => "fist" |;
+ lmap = new| "a" => 5, "b" =>3, foo => "bar" , "zz" => "fist" |;
  
  print(lmap[foo]);
 

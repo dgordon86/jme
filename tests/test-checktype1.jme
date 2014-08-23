@@ -6,7 +6,7 @@ main()
  bool = true;
  vec = [1,2,3];
  matx = [1,2; 3,4];
- map = | "a" => "a", "b" => "b", "c" => "c" |;
+ map = new| "a" => "a", "b" => "b", "c" => "c" |;
  
  print("Check Int");
  print(is_Int(int));

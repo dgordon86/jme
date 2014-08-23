@@ -1,6 +1,6 @@
 main()
 {
- a = | "a" => 5, "b" =>3, "c" => "barr" , "zz" => "fist" |;
+ a = new | "a" => 5, "b" =>3, "c" => "barr" , "zz" => "fist" |;
  a["c"] =a["a"] + a["b"];
  print(a["c"]);
 }
